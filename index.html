@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://kira-ito.github.io/ito5/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <p id="timer">00:00:00</p>
+
+
+        <div>
+            <button id="start_stop" class="btn btn-ptimary">START</button>
+
+        </div>
+    </div>
+
+    <script>    //scriptタグの位置はbodyの最後かheadの最後に記述する,または別ファイルに記述
+
+        var start;
+        var timer_id;
+
+
+        document.getElementById('start_stop').addEventListener('click',
+         function () {
+
+            if (this.innerHTML === 'START') {
+                start = new Date();
+
+                timer_id = setInterval(goTimer, 10);
+
+                //STOPボタンを実装
+                this.innerHTML = 'STOP';
+                this.classList.add('btn-primary');
+                this.classList.add('btn-danger');
+            } else {
+
+                clearInterval(timer_id);
+
+                // STARTボタンに戻す
+                this.innerHTML = "START";
+                this.classList.remove('btn-danger');
+                this.classList.add('btn-primary');
+            }
+
+        });
+
+        var addZero = function (value) {
+            if (value < 10) {
+                value = '0' + value;
+            }
+            return value;
+        }
+
+        var goTimer = function () {
+            var now = new Date();
+
+            var mili = now.getTime() - start.getTime();
+            var seconds = Math.floor(mili / 1000);
+            var min = Math.floor(seconds / 60);
+            var hours = Math.floor(min / 60);
+
+            seconds = seconds - min * 60;
+            min = min - hours * 60;
+
+            hours = addZero(hours);
+            min = addZero(min);
+            seconds = addZero(seconds);
+
+            document.getElementById('timer').innerHTML = hours + ':' + min + ':' + seconds;
+            //now.getTime() - start.getTime();
+        }
+    </script>
+
+</body>
+
+</html>
